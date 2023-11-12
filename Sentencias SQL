@@ -203,6 +203,37 @@ INSERT INTO tabla_beneficiarios (id_beneficiario, id_bancarizado, discapacidad, 
 VALUES
 
 
+
+
+
+create table beneficiario
+(
+	id_beneficiario integer,
+    id_bancarizado INTEGER CONSTRAINT check_id1 CHECK (id_bancarizado BETWEEN 1 AND 4),
+	discapacidad varchar(3),
+    id_estadobeneficiario INTEGER CONSTRAINT check_id2 CHECK (id_estadobeneficiario BETWEEN 1 AND 2),
+    id_etnia INTEGER CONSTRAINT check_id3 CHECK (id_etnia BETWEEN 1 AND 8),
+	fechainscripcionbeneficiario date,
+	id_genero INTEGER CONSTRAINT check_id4 CHECK (id_genero BETWEEN 1 AND 3),
+	id_nivelescolaridad INTEGER CONSTRAINT check_id5 CHECK (id_nivelescolaridad BETWEEN 1 AND 9), 
+	id_tipopoblacion INTEGER CONSTRAINT check_id6 CHECK (id_tipopoblacion BETWEEN 1 AND 6),
+	titular varchar(3) CHECK (titular IN ('SI', 'NO')),
+	id_rangoedad INTEGER CONSTRAINT check_id7 CHECK (id_rangoedad BETWEEN 1 AND 6), 
+	id_documento INTEGER CONSTRAINT check_id8 CHECK (id_documento BETWEEN 1 AND 6),
+	
+	primary key(id_beneficiario),
+	
+	foreign key (id_bancarizado) references bancarizado (id_bancarizado),
+	foreign key (id_estadobeneficiario) references estadobeneficiario (id_estadobeneficiario),
+	foreign key (id_etnia) references etnia (id_etnia),
+	foreign key (id_genero) references genero (id_genero),
+	foreign key (id_nivelescolaridad) references nivelescolaridad (id_nivelescolaridad),
+	foreign key (id_tipopoblacion) references tipopoblacion (id_tipopoblacion),
+	foreign key (id_rangoedad) references edad (id_rangoedad),
+	foreign key (id_documento) references documento (id_documento)
+)
+
+
 CREATE TABLE departamento (
     nombredepa VARCHAR(25),
     codigodepar INTEGER CONSTRAINT check_id CHECK (codigodepar BETWEEN 1 AND 99)    
