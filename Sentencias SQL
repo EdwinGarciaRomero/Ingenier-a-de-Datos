@@ -1,7 +1,7 @@
 CREATE TABLE genero (
     id_genero INTEGER CONSTRAINT check_id CHECK (id_genero BETWEEN 1 AND 3),
     genero VARCHAR(6) CHECK (genero IN ('hombre', 'mujer', 'ND')),
-	primary key(id_genero)
+    primary key(id_genero)
 );
 
 INSERT INTO genero (id_genero, genero)
@@ -14,7 +14,7 @@ VALUES
 CREATE TABLE estadobeneficiario(
     id_estadobeneficiario INTEGER CONSTRAINT check_id CHECK (id_estadobeneficiario BETWEEN 1 AND 2),
     estadobeneficiario VARCHAR(10) CHECK (estadobeneficiario IN ('ACTIVO', 'NO ACTIVO')),
-	primary key(id_estadobeneficiario)
+    primary key(id_estadobeneficiario)
 );
 
 INSERT INTO estadobeneficiario (id_estadobeneficiario, estadobeneficiario)
@@ -53,7 +53,7 @@ VALUES
 
 CREATE TABLE nivelescolaridad(
     id_nivelescolaridad INTEGER CONSTRAINT check_id CHECK (id_nivelescolaridad BETWEEN 1 AND 9),
-    nivelescolaridad VARCHAR(16) CHECK (nivelescolaridad IN ('PRIMARIA', 'SECUNDARIA', 'TECNICO', 'TECNOLOGO', 'TRANSICION', 'PREGRADO', 'POSGRADO', 'SIN ESPECIFICAR', 'ND'))
+    nivelescolaridad VARCHAR(16) CHECK (nivelescolaridad IN ('PRIMARIA', 'SECUNDARIA', 'TECNICO', 'TECNOLOGO', 'TRANSICION', 'PREGRADO', 'POSGRADO', 'SIN ESPECIFICAR', 'ND')),
 	primary key(id_nivelescolaridad)
 );
 
