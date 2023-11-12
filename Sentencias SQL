@@ -173,3 +173,38 @@ INSERT INTO ultimobeneficio (id_ultimobeneficio, rangoultimobeneficioasignado)
 VALUES
 (1, '0-1.300.000'),
 (2, '1.300.001-2.600.000');
+
+
+
+CREATE TABLE tabla_beneficiarios(
+    id_beneficiario INTEGER CONSTRAINT,
+    id_bancarizado INTEGER CONSTRAINT,
+    FOREIGN KEY (id_bancarizado) REFERENCES bancarizado(id_bancarizado),
+    discapacidad VARCHAR(2) CHECK (discapacidad IN ('SI', 'NO')),
+    id_estadobeneficiario INTEGER CONSTRAINT,
+    FOREIGN KEY (id_estadobeneficiario) REFERENCES estadobeneficiario(id_estadobeneficiario),
+    id_etnia INTEGER CONSTRAINT,
+    FOREIGN KEY (id_etnia) REFERENCES etnia(id_etnia),
+    fechainscripcionbeneficiario DATE,
+    id_genero INTEGER CONSTRAINT,
+    FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
+    id_nivelescolaridad INTEGER CONSTRAINT,
+    FOREIGN KEY (id_nivelescolaridad) REFERENCES nivelescolaridad(id_nivelescolaridad),
+    id_tipopoblacion INTEGER CONSTRAINT,
+    FOREIGN KEY (id_tipopoblacion) REFERENCES tipopoblacion(id_tipopoblacion),
+    titular VARCHAR(2) CHECK (titular IN ('SI', 'NO')),
+    id_rangoedad INTEGER CONSTRAINT,
+    FOREIGN KEY (id_rangoedad) REFERENCES rangoedad(id_rangoedad),
+    id_documento INTEGER CONSTRAINT,
+    FOREIGN KEY (id_documento) REFERENCES documento(id_documento)
+);
+
+INSERT INTO tabla_beneficiarios (id_beneficiario, id_bancarizado, discapacidad, id_estadobeneficiario, id_etnia, fechainscripcionbeneficiario, id_genero, id_nivelescolaridad, id_tipopoblacion, titular, id_rangoedad, id_documento)
+VALUES
+
+
+CREATE TABLE departamento (
+    nombredepa VARCHAR(25),
+    codigodepar INTEGER CONSTRAINT check_id CHECK (codigodepar BETWEEN 1 AND 99)    
+);
+
