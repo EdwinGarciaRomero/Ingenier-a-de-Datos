@@ -1,6 +1,7 @@
 CREATE TABLE genero (
     id_genero INTEGER CONSTRAINT check_id CHECK (id_genero BETWEEN 1 AND 3),
-    genero VARCHAR(6) CHECK (genero IN ('hombre', 'mujer', 'ND'))
+    genero VARCHAR(6) CHECK (genero IN ('hombre', 'mujer', 'ND')),
+	primary key(id_genero)
 );
 
 INSERT INTO genero (id_genero, genero)
@@ -12,7 +13,8 @@ VALUES
 
 CREATE TABLE estadobeneficiario(
     id_estadobeneficiario INTEGER CONSTRAINT check_id CHECK (id_estadobeneficiario BETWEEN 1 AND 2),
-    estadobeneficiario VARCHAR(10) CHECK (estadobeneficiario IN ('ACTIVO', 'NO ACTIVO'))
+    estadobeneficiario VARCHAR(10) CHECK (estadobeneficiario IN ('ACTIVO', 'NO ACTIVO')),
+	primary key(id_estadobeneficiario)
 );
 
 INSERT INTO estadobeneficiario (id_estadobeneficiario, estadobeneficiario)
@@ -23,7 +25,8 @@ VALUES
 
 CREATE TABLE tipopoblacion(
     id_tipopoblacion INTEGER CONSTRAINT check_id CHECK (id_tipopoblacion BETWEEN 1 AND 6),
-    tipopoblacion VARCHAR(14) CHECK (tipopoblacion IN ('DESPLAZADOS', 'INDIGENAS', 'ND', 'SISBEN', 'TRANSICION', 'UNIDOS'))
+    tipopoblacion VARCHAR(14) CHECK (tipopoblacion IN ('DESPLAZADOS', 'INDIGENAS', 'ND', 'SISBEN', 'TRANSICION', 'UNIDOS')),
+	primary key(id_tipopoblacion)
 );
 
 INSERT INTO tipopoblacion (id_tipopoblacion, tipopoblacion)
@@ -37,7 +40,8 @@ VALUES
 
 CREATE TABLE bancarizado(
     id_bancarizado INTEGER CONSTRAINT check_id CHECK (id_bancarizado BETWEEN 1 AND 4),
-    bancarizado VARCHAR(4) CHECK (bancarizado IN ('SI', 'NO', 'ND', 'NULL'))
+    bancarizado VARCHAR(4) CHECK (bancarizado IN ('SI', 'NO', 'ND', 'NULL')),
+	primary key(id_bancarizado)
 );
 
 INSERT INTO bancarizado (id_bancarizado, bancarizado)
@@ -50,6 +54,7 @@ VALUES
 CREATE TABLE nivelescolaridad(
     id_nivelescolaridad INTEGER CONSTRAINT check_id CHECK (id_nivelescolaridad BETWEEN 1 AND 9),
     nivelescolaridad VARCHAR(16) CHECK (nivelescolaridad IN ('PRIMARIA', 'SECUNDARIA', 'TECNICO', 'TECNOLOGO', 'TRANSICION', 'PREGRADO', 'POSGRADO', 'SIN ESPECIFICAR', 'ND'))
+	primary key(id_nivelescolaridad)
 );
 
 INSERT INTO nivelescolaridad (id_nivelescolaridad, nivelescolaridad )
@@ -67,7 +72,8 @@ VALUES
 
 CREATE TABLE etnia(
     id_etnia INTEGER CONSTRAINT check_id CHECK (id_etnia BETWEEN 1 AND 8),
-    etnia VARCHAR(15) CHECK (etnia IN ('AFROCOLOMBIANO', 'INDIGENA', 'MESTIZO', 'ND', 'PALENQUERO', 'RAIZAL', 'ROM', 'ROM o GITANO'))
+    etnia VARCHAR(15) CHECK (etnia IN ('AFROCOLOMBIANO', 'INDIGENA', 'MESTIZO', 'ND', 'PALENQUERO', 'RAIZAL', 'ROM', 'ROM o GITANO')),
+	primary key(id_etnia)
 );
 
 INSERT INTO etnia (id_etnia, etnia)
@@ -81,12 +87,13 @@ VALUES
 (7, 'ROM'),
 (8, 'ROM O GITANO');
 
-CREATE TABLE rangoedad(
+CREATE TABLE edad(
     id_rangoedad INTEGER CONSTRAINT check_id CHECK (id_rangoedad BETWEEN 1 AND 6),
-    rangoedad VARCHAR(6) CHECK (rangoedad IN ('00-05', '006-17', '18-29', '30-49', '50-65', '65<'))
+    rangoedad VARCHAR(6) CHECK (rangoedad IN ('00-05', '006-17', '18-29', '30-49', '50-65', '65<')),
+	primary key(id_rangoedad)
 );
 
-INSERT INTO rangoedad (id_rangoedad, rangoedad)
+INSERT INTO edad (id_edad, edad)
 VALUES
 (1, '00-05'),
 (2, '006-17'),
@@ -97,7 +104,8 @@ VALUES
 
 CREATE TABLE documento(
     id_documento INTEGER CONSTRAINT check_id CHECK (id_documento BETWEEN 1 AND 6),
-    documento VARCHAR(12) CHECK (documento IN ('CC', 'CE', 'PA', 'RC', 'TI', 'No Definido'))
+    documento VARCHAR(12) CHECK (documento IN ('CC', 'CE', 'PA', 'RC', 'TI', 'No Definido')),
+	primary key(id_documento)
 );
 
 INSERT INTO documento (id_documento, documento)
@@ -108,11 +116,12 @@ VALUES
 (4, 'RC'),
 (5, 'TI'),
 (6, 'No Definido');
--------------------------
+
 
 CREATE TABLE asignacionbeneficio(
     id_tipoasignacion INTEGER CONSTRAINT check_id CHECK (id_tipoasignacion BETWEEN 1 AND 2),
-    tipoasignacionbeneficio VARCHAR(10) CHECK (tipoasignacionbeneficio IN ('MONETARIO', 'ND'))
+    tipoasignacionbeneficio VARCHAR(10) CHECK (tipoasignacionbeneficio IN ('MONETARIO', 'ND')),
+	primary key(id_tipoasignacion)
 );
 
 INSERT INTO asignacionbeneficio (id_tipoasignacion, tipoasignacionbeneficio)
@@ -122,7 +131,8 @@ VALUES
 
 CREATE TABLE beneficioconsolidado(
     id_beneficioconsolidado INTEGER CONSTRAINT check_id CHECK (id_beneficioconsolidado BETWEEN 1 AND 5),
-    rangobeneficioconsolidadoasignado VARCHAR(20) CHECK (rangobeneficioconsolidadoasignado IN ('0-1.500.000', '1.500.001-3.000.000', '3.000.001-4.500.000', '4.500.001-6.000.000', '6.000.001<'))
+    rangobeneficioconsolidadoasignado VARCHAR(20) CHECK (rangobeneficioconsolidadoasignado IN ('0-1.500.000', '1.500.001-3.000.000', '3.000.001-4.500.000', '4.500.001-6.000.000', '6.000.001<')),
+	primary key(id_beneficioconsolidado)
 );
 
 INSERT INTO beneficioconsolidado(id_beneficioconsolidado, rangobeneficioconsolidadoasignado)
@@ -136,7 +146,8 @@ VALUES
 
 CREATE TABLE tipobeneficio(
     id_tipobeneficio INTEGER CONSTRAINT check_id CHECK (id_tipobeneficio BETWEEN 1 AND 10),
-    tipobeneficio VARCHAR(46) CHECK (tipobeneficio IN ('EDUCACIÓN PRIMARIA', 'EDUCACIÓN PRIMARIANUTRICIÓN', 'EDUCACIÓN PRIMARIANUTRICIÓN MENOR', 'EDUCACIÓN SECUNDARIA', 'EDUCACIÓN SECUNDARIANUTRICIÓN', 'NUTRICIÓN', 'NUTRICIÓN MENOR', 'TRANSICIÓN', 'TRANSICIÓNNUTRICIÓN MENOR', 'ND'))
+    tipobeneficio VARCHAR(46) CHECK (tipobeneficio IN ('EDUCACIÓN PRIMARIA', 'EDUCACIÓN PRIMARIANUTRICIÓN', 'EDUCACIÓN PRIMARIANUTRICIÓN MENOR', 'EDUCACIÓN SECUNDARIA', 'EDUCACIÓN SECUNDARIANUTRICIÓN', 'NUTRICIÓN', 'NUTRICIÓN MENOR', 'TRANSICIÓN', 'TRANSICIÓNNUTRICIÓN MENOR', 'ND')),
+	primary key(id_tipobeneficio)
 );
 
 INSERT INTO tipobeneficio (id_tipobeneficio, tipobeneficio)
@@ -154,48 +165,11 @@ VALUES
 
 CREATE TABLE ultimobeneficio(
     id_ultimobeneficio INTEGER CONSTRAINT check_id CHECK (id_ultimobeneficio BETWEEN 1 AND 2),
-    rangoultimobeneficioasignado VARCHAR(22) CHECK (rangoultimobeneficioasignado IN ('0-1.300.000', '1.300.001-2.600.000'))
+    rangoultimobeneficioasignado VARCHAR(22) CHECK (rangoultimobeneficioasignado IN ('0-1.300.000', '1.300.001-2.600.000')),
+	primary key(id_ultimobeneficio)
 );
 
 INSERT INTO ultimobeneficio (id_ultimobeneficio, rangoultimobeneficioasignado)
 VALUES
 (1, '0-1.300.000'),
 (2, '1.300.001-2.600.000');
-
-
-----------------------------------
-
-CREATE TABLE tabla_beneficiarios(
-    id_beneficiario INTEGER CONSTRAINT,
-    id_bancarizado INTEGER CONSTRAINT,
-    FOREIGN KEY (id_bancarizado) REFERENCES bancarizado(id_bancarizado),
-    discapacidad VARCHAR(2) CHECK (discapacidad IN ('SI', 'NO')),
-    id_estadobeneficiario INTEGER CONSTRAINT,
-    FOREIGN KEY (id_estadobeneficiario) REFERENCES estadobeneficiario(id_estadobeneficiario),
-    id_etnia INTEGER CONSTRAINT,
-    FOREIGN KEY (id_etnia) REFERENCES etnia(id_etnia),
-    fechainscripcionbeneficiario DATE,
-    id_genero INTEGER CONSTRAINT,
-    FOREIGN KEY (id_genero) REFERENCES genero(id_genero),
-    id_nivelescolaridad INTEGER CONSTRAINT,
-    FOREIGN KEY (id_nivelescolaridad) REFERENCES nivelescolaridad(id_nivelescolaridad),
-    id_tipopoblacion INTEGER CONSTRAINT,
-    FOREIGN KEY (id_tipopoblacion) REFERENCES tipopoblacion(id_tipopoblacion),
-    titular VARCHAR(2) CHECK (titular IN ('SI', 'NO')),
-    id_rangoedad INTEGER CONSTRAINT,
-    FOREIGN KEY (id_rangoedad) REFERENCES rangoedad(id_rangoedad),
-    id_documento INTEGER CONSTRAINT,
-    FOREIGN KEY (id_documento) REFERENCES documento(id_documento)
-);
-
-INSERT INTO tabla_beneficiarios (id_beneficiario, id_bancarizado, discapacidad, id_estadobeneficiario, id_etnia, fechainscripcionbeneficiario, id_genero, id_nivelescolaridad, id_tipopoblacion, titular, id_rangoedad, id_documento)
-VALUES
-
-----------------------------------
-
-----------------------------------
-
-CREATE TABLE departamento (
-    nombredepa VARCHAR(25),
-    codigodepar INTEGER CONSTRAINT check_id CHECK (codigodepar BETWEEN 1 AND 2)    
-);
