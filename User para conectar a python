@@ -1,0 +1,9 @@
+CREATE USER DAVID WITH
+LOGIN
+NOSUPERUSER
+CONNECTION LIMIT -1
+PASSWORD '123456'
+
+grant select on asignacionbeneficio to DAVID
+
+select * from asignacionbeneficio
