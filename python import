@@ -1,0 +1,211 @@
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from asignacionbeneficio"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+-------
+
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from bancarizado"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from beneficiario"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+----
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from beneficio"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+-----
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from beneficioconsolidado"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+----
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from departamento"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+----
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from documento"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from edad"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from estadobeneficiario"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from etnia"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from genero"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from nivelescolaridad"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from tipobeneficio"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from tipopoblacion"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+---
+import pandas as pd
+import psycopg2 as psy2
+#conexion 
+
+dname = "Proyecto"
+user = "david" 
+password = '123456'
+host = "localhost"
+conn = psy2.connect(dbname = dname, user = user, password = password, host=host)
+sql_query = "select * from ultimobeneficio"
+df = pd.read_sql(sql_query, conn)
+print (df.iloc[0:9])
+conn.close()
+
