@@ -4,6 +4,9 @@ NOSUPERUSER
 CONNECTION LIMIT -1
 PASSWORD '123456'
 
-grant select on asignacionbeneficio to DAVID
+grant select on asignacionbeneficio,bancarizado,beneficiario,beneficio,beneficioconsolidado,departamento,
+documento, edad, estadobeneficiario, etnia, genero, nivelescolaridad, tipobeneficio, tipopoblacion, ultimobeneficio,
+principal
+to DAVID
 
 select * from asignacionbeneficio
