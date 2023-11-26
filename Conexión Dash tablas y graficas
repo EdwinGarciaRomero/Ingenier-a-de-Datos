@@ -1,0 +1,212 @@
+import pandas as pd
+import psycopg2 as psy2
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+import plotly.express as px
+import dash_table as tbl
+
+# Conexión a la base de datos
+dname = "Proyecto"
+user = "postgres"
+password = 'Julio0729'
+host = "localhost"
+
+conn = psy2.connect(dbname=dname, user=user, password=password, host=host)
+
+# Consultas SQL para obtener los datos de las vistas
+sql_beneficiarios_por_departamento = "SELECT * FROM vista_beneficiarios_por_departamento_5;"
+sql_proporcion_etnia = "SELECT * FROM vista_proporcion_etnia;"
+sql_promedio_beneficiarios = "SELECT * FROM vista_promedio_beneficiarios;"
+sql_nivel_escolaridad_por_departamento = "SELECT * FROM vista_nivel_escolaridad_por_departamento1;"
+sql_tipos_beneficios_por_departamento = "SELECT * FROM vista_tipos_beneficios_por_departamento1;"
+
+# Obtener los datos de las vistas
+df_beneficiarios_por_departamento = pd.read_sql(sql_beneficiarios_por_departamento, conn)
+df_proporcion_etnia = pd.read_sql(sql_proporcion_etnia, conn)
+df_promedio_beneficiarios = pd.read_sql(sql_promedio_beneficiarios, conn)
+df_nivel_escolaridad_por_departamento = pd.read_sql(sql_nivel_escolaridad_por_departamento, conn)
+df_tipos_beneficios_por_departamento = pd.read_sql(sql_tipos_beneficios_por_departamento, conn)
+
+# Definir colores y estilo
+colors = {
+    'background': '#ADD8E6',
+    'text': '#000000',
+    'header_background': 'red',
+    'header_text': '#FFFFFFF'
+}
+
+# Estilo de los cuadros
+box_style = {
+    'borderRadius': '5px',
+    'padding': '20px',
+    'margin': '10px',
+    'background-color': 'Black',
+    'box-shadow': '0px 0px 10px 0px rgba(0, 0, 0, 0.1)'
+}
+
+# Estilo de fuente más pequeño
+small_font = {'fontSize': '17px'}
+medium_font = {'fontSize': '20px'}
+
+# Inicializar la aplicación Dash
+app = dash.Dash(__name__)
+
+# Diseño de la aplicación
+# Diseño de la aplicación
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+    # Banner
+    html.Div([
+        html.H1('Proyecto Ingeniería de Datos', style={'color': colors['text'], 'textAlign': 'center'}),
+        html.Img(src='assets/logo.png')
+    ], className='banner'),
+    
+    html.Div([
+        html.H3('Universidad del Rosario', style={'color': colors['text'], 'textAlign': 'center', **small_font}),
+        html.H3('Profesor: Javier Casas Salgado', style={'color': colors['text'], 'textAlign': 'center', **small_font}),
+        html.H3('Estudiantes: Edwin David García, Juan David Ríos, Edward Castillo', style={'color': colors['text'], 'textAlign': 'center', **small_font})
+    ], className='dcc_compon'),
+    
+    # Cuadro 1: Tabla Beneficiarios por departamento
+    html.Div([
+        html.Div([
+            html.H3('Tabla Beneficiarios por Departamento', style={'color': colors['header_text'], **medium_font}),
+            html.Div([
+                tbl.DataTable(
+                    id='table_beneficiarios_por_departamento',
+                    columns=[{"name": i, "id": i} for i in df_beneficiarios_por_departamento.columns],
+                    data=df_beneficiarios_por_departamento.head(10).to_dict('records'),
+                    style_table={'maxHeight': '300px', 'overflowY': 'scroll'},  # Altura máxima y desplazamiento vertical
+                ),
+            ], 
+                
+                style=box_style, className='create_container2'),
+        ], className='five columns'),
+        html.Div([
+            dcc.Graph(
+                id='graph_beneficiarios_por_departamento',
+                figure=px.bar(df_beneficiarios_por_departamento, x='nombredepa', y='proporcion_beneficiarios',
+                              title='Beneficiarios por Departamento'),
+                style=box_style
+            ),
+            
+            html.Div([
+                html.H3('Descripcion', style={'color': colors['text'], 'textAlign': 'center', **small_font})
+            ], className='create_container2'),
+            
+        ], className='seven columns'),
+    ], className='row'),
+
+    # Cuadro 2: Proporción por etnia
+    html.Div([
+        html.Div([
+            html.H3('Tabla Proporción por Etnia', style={'color': colors['header_text'], **medium_font}),
+            html.Div([
+                tbl.DataTable(
+                    id='table_proporcion_etnia',
+                    columns=[{"name": i, "id": i} for i in df_proporcion_etnia.columns],
+                    data=df_proporcion_etnia.head(10).to_dict('records'),
+                    style_table={'maxHeight': '300px', 'overflowY': 'scroll'},
+                ),
+
+            ], style=box_style, className='create_container2'),
+        ], className='five columns'),
+        html.Div([
+            dcc.Graph(
+                id='graph_proporcion_etnia',
+                figure=px.pie(df_proporcion_etnia, names='etnia', values='proporcion_etnia',
+                              title='Proporción de Beneficiarios por Etnia'),
+                style=box_style
+            ),
+            html.Div([
+                html.H3('Descripcion', style={'color': colors['text'], 'textAlign': 'center', **small_font})
+            ], className='create_container2'),
+            
+        ], className='seven columns'),
+    ], className='row'),
+
+    # Cuadro 3: Promedio de beneficiarios
+    html.Div([
+        html.Div([
+            html.H3('Tabla Promedio de Beneficiarios', style={'color': colors['header_text'], **medium_font}),
+            html.Div([
+                tbl.DataTable(
+                    id='table_promedio_beneficiarios',
+                    columns=[{"name": i, "id": i} for i in df_promedio_beneficiarios.columns],
+                    data=df_promedio_beneficiarios.head(10).to_dict('records'),
+                    style_table={'maxHeight': '300px', 'overflowY': 'scroll'},
+                ),
+            ], style=box_style, className='create_container2'),
+        ], className='five columns'),
+        html.Div([
+            dcc.Graph(
+                id='graph_promedio_beneficiarios',
+                figure=px.bar(df_promedio_beneficiarios, x='nombredepa', y='promedio_beneficiarios',
+                              title='Promedio de Beneficiarios por Departamento'),
+                style=box_style
+            ),
+            html.Div([
+                html.H3('Descripcion', style={'color': colors['text'], 'textAlign': 'center', **small_font})
+            ], className='create_container2'),
+        ], className='seven columns'),
+    ], className='row'),
+
+    # Cuadro 4: Nivel de escolaridad por departamento
+    html.Div([
+        html.Div([
+            html.H3('Tabla Nivel de Escolaridad por Departamento', style={'color': colors['header_text'], **medium_font}),
+            html.Div([
+                tbl.DataTable(
+                    id='table_nivel_escolaridad_por_departamento',
+                    columns=[{"name": i, "id": i} for i in df_nivel_escolaridad_por_departamento.columns],
+                    data=df_nivel_escolaridad_por_departamento.head(10).to_dict('records'),
+                    style_table={'maxHeight': '300px', 'overflowY': 'scroll'},
+                ),
+            ], style=box_style, className='create_container2'),
+        ], className='five columns'),
+        html.Div([
+            dcc.Graph(
+                id='graph_nivel_escolaridad_por_departamento',
+                figure=px.scatter(df_nivel_escolaridad_por_departamento, x='nombredepa', y='cantidad_beneficiarios',
+                                  color='nivelescolaridad',
+                                  title='Beneficiarios por Nivel de Escolaridad y Departamento'),
+                style=box_style
+            ),
+            html.Div([
+                html.H3('Descripcion', style={'color': colors['text'], 'textAlign': 'center', **small_font})
+            ], className='create_container2'),
+        ], className='seven columns'),
+    ], className='row'),
+
+    # Cuadro 5: Tipos de beneficios por departamento
+    html.Div([
+        html.Div([
+            html.H3('Tabla Tipos de Beneficios por Departamento', style={'color': colors['header_text'], **medium_font}),
+            html.Div([
+                tbl.DataTable(
+                    id='table_tipos_beneficios_por_departamento',
+                    columns=[{"name": i, "id": i} for i in df_tipos_beneficios_por_departamento.columns],
+                    data=df_tipos_beneficios_por_departamento.head(10).to_dict('records'),
+                    style_table={'maxHeight': '300px', 'overflowY': 'scroll'},
+                ),
+
+            ], style=box_style, className='create_container2'),
+        ], className='five columns'),
+        html.Div([
+            dcc.Graph(
+                id='graph_tipos_beneficios_por_departamento',
+                figure=px.scatter(df_tipos_beneficios_por_departamento, x='nombredepa', y='cantidad_beneficiarios',
+                                  color='tipobeneficio',
+                                  title='Beneficiarios por Tipo de Beneficio y Departamento'),
+                style=box_style
+            ),
+            html.Div([
+                html.H3('Descripcion', style={'color': colors['text'], 'textAlign': 'center', **small_font})
+            ], className='create_container2'),
+        ], className='seven columns'),
+    ], className='row')
+])
+
+if __name__ == '__main__':
+    app.run(port=8085)
