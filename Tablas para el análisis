@@ -1,0 +1,242 @@
+CREATE TABLE Departamentos (
+    CodigoDepto INT PRIMARY KEY,
+    Habitantes INT
+);
+
+INSERT INTO Departamentos (CodigoDepto, Habitantes) VALUES
+(5, 6994792),  -- Antioquia
+(8, 2835509),  -- Atlántico
+(11, 7968095), -- Bogotá, D.C.
+(13, 2258929), -- Bolívar
+(15, 1267378), -- Boyacá
+(17, 1046418),  -- Caldas
+(18, 423857),  -- Caquetá
+(19, 1528076),  -- Cauca
+(20, 1359719), -- Cesar
+(23, 1868166), -- Córdoba
+(25, 3577177),  -- Cundinamarca
+(27, 557654),  -- Chocó
+(41, 1149598),  -- Huila
+(44, 1015909), -- La Guajira
+(47, 1476665),  -- Magdalena
+(50, 1088749),  -- Meta
+(52, 1631117),  -- Nariño
+(54, 1658835),  -- Norte de Santander
+(63, 577543), -- Quindío
+(66, 988091),  -- Risaralda
+(68, 200000),  -- San Andrés y Providencia
+(70, 700000),  -- Santander
+(73, 200000),  -- Sucre
+(76, 2500000), -- Tolima
+(81, 200000),  -- Arauca
+(85, 150000),  -- Casanare
+(86, 50000),   -- Putumayo
+(88, 150000),  -- Archipiélago de San Andrés, Providencia y Santa Catalina
+(91, 50000),   -- Amazonas
+(94, 60000),   -- Guaviare
+(95, 80000),   -- Vaupés
+(97, 50000),   -- Vichada
+(99, 150000);  -- Guainía
+
+
+-- Tabla con poblaciones
+
+-- Contar codigodepar para cada valor y comparar cada código con el nombre
+--correspondiente y la población. Posteriormente, sacar el porcentaje del número de
+--habitantes beneficiados respecto a la población total del departamento en estudio.
+--De aquí podemos analizar si el porcentaje es similar en todos los departamentos
+--para verificar si la distribución es equitativa en todos los departamentos analizados o
+--por lo menos en la mayoría.
+
+CREATE or replace VIEW vista_beneficiarios_por_departamento_5 AS
+SELECT COUNT(b.id_beneficiario) as cantidad_beneficiarios, d.habitantes,
+(COUNT(b.id_beneficiario) / CAST(d.habitantes AS DECIMAL))*100 as proporcion_beneficiarios, dep.nombredepa
+FROM principal as b
+JOIN departamentos as d ON b.codigodepar = d.codigodepto
+JOIN departamento as dep ON b.codigodepar = dep.codigodepar
+GROUP BY b.codigodepar, d.habitantes, dep.nombredepa;
+
+SELECT * FROM vista_beneficiarios_por_departamento_5;
+
+-- Hallar la relación entre la columna etnia y sus diferentes id para analizar si las
+--personas que no pertenecen a ninguna etnia reciben el mismo número de beneficios
+--o similar a quienes son parte de alguna etnia. De aquí podemos referenciar si
+--efectivamente está funcionando el objetivo de beneficiar a quienes pertenecen a
+--alguna etnia.
+
+CREATE VIEW vista_proporcion_etnia AS
+SELECT
+    e.id_etnia,
+    e.etnia,
+    COUNT(pb.id_beneficio) as total_beneficios,
+    COUNT(pb.id_beneficio) * 100.0 / SUM(COUNT(pb.id_beneficio)) OVER () as proporcion_etnia
+FROM
+    etnia e
+LEFT JOIN
+    beneficiario b ON e.id_etnia = b.id_etnia
+LEFT JOIN
+    Principal p ON b.id_beneficiario = p.id_beneficiario
+LEFT JOIN
+    beneficio pb ON p.id_beneficio = pb.id_beneficio
+GROUP BY
+    e.id_etnia, e.etnia;
+	
+SELECT * FROM vista_proporcion_etnia;
+
+-- Comparar las columnas cantidaddebeneficiarios, la cual nos habla por subsidio
+--cuántas personas fueron beneficiadas y la columna codigodepar; así por medio del
+--valor de la relación se puede conocer la situación socioeconómica del departamento,
+--puesto que si el promedio de beneficiarios es mayor, significa que el número de
+--personas en situación de vulnerabilidad en el departamento es mayor. 
+
+
+CREATE VIEW vista_promedio_beneficiarios AS
+SELECT
+    d.codigodepar,
+    d.nombredepa,
+    AVG(b.cantidaddebeneficiarios) as promedio_beneficiarios
+FROM
+    departamento d
+LEFT JOIN
+    Principal p ON d.codigodepar = p.codigodepar
+LEFT JOIN
+    beneficio b ON p.id_beneficio = b.id_beneficio
+LEFT JOIN
+departamentos dep ON p.codigodepar =  dep.codigodepto 
+
+GROUP BY
+    d.codigodepar, d.nombredepa;
+
+
+SELECT * FROM vista_promedio_beneficiarios;
+
+
+-- Contrastar las variables que representan el último monto recibido por el beneficiario
+-- y el tipo de beneficio asignado. Este caso de análisis nos puede describir cuáles son
+-- los beneficios representan un mayor ingreso para las familias y es posible también
+-- ver cuáles son los beneficios que han tenido variación en sus montos.
+
+
+CREATE OR REPLACE VIEW vista_tipos_beneficios_mas_beneficiarios AS
+SELECT
+    tb.tipobeneficio,
+    COUNT(p.id_beneficiario) as cantidad_beneficiarios,
+    COUNT(p.id_beneficiario) * 100.0 / SUM(COUNT(p.id_beneficiario)) OVER () as proporcion_personas
+FROM
+    tipobeneficio tb
+JOIN
+    beneficio b ON tb.id_tipobeneficio = b.id_tipobeneficio
+LEFT JOIN
+    Principal p ON b.id_beneficio = p.id_beneficio
+GROUP BY
+    tb.tipobeneficio
+ORDER BY
+    cantidad_beneficiarios DESC;
+
+SELECT * FROM vista_tipos_beneficios_mas_beneficiarios;
+
+
+
+
+
+--Hallar la relación entre el objetivo del tipo de beneficio asignado (Educación primaria,
+--educación secundaria y transición) y el departamento, para identificar las
+--necesidades principales de cada departamento. Además por medio de una
+--comparación con datos de DANE (boletín técnico sobre inseguridad alimentaria) es
+--posible identificar si los recursos están distribuidos adecuadamente con respecto a
+--los déficits de cada departamento. Ej: Si el déficit de desnutrición infantil de Boyacá
+--es del 30%, mirar si la cantidad de beneficios entregados con objetivo la población
+--menor sea cercano a este
+
+
+CREATE OR REPLACE VIEW vista_tipos_beneficios_por_departamento AS
+SELECT
+    d.nombredepa,
+    tb.tipobeneficio,
+    COUNT(p.id_beneficiario) as cantidad_beneficiarios
+FROM
+    departamento d
+JOIN
+    Principal p ON d.codigodepar = p.codigodepar
+JOIN
+    beneficio b ON p.id_beneficio = b.id_beneficio
+JOIN
+    tipobeneficio tb ON b.id_tipobeneficio = tb.id_tipobeneficio
+GROUP BY
+    d.nombredepa, tb.tipobeneficio
+ORDER BY
+    d.nombredepa, cantidad_beneficiarios DESC;
+
+SELECT * FROM vista_tipos_beneficios_por_departamento;
+
+----- Esta version exluyendo los ND ----
+
+CREATE OR REPLACE VIEW vista_tipos_beneficios_por_departamento1 AS
+SELECT
+    d.nombredepa,
+    tb.tipobeneficio,
+    COUNT(p.id_beneficiario) as cantidad_beneficiarios
+FROM
+    departamento d
+JOIN
+    Principal p ON d.codigodepar = p.codigodepar
+JOIN
+    beneficio b ON p.id_beneficio = b.id_beneficio
+JOIN
+    tipobeneficio tb ON b.id_tipobeneficio = tb.id_tipobeneficio
+WHERE
+    tb.tipobeneficio <> 'ND'  -- Excluir 'ND' de la selección
+GROUP BY
+    d.nombredepa, tb.tipobeneficio
+ORDER BY
+    d.nombredepa, cantidad_beneficiarios DESC;
+
+SELECT * FROM vista_tipos_beneficios_por_departamento1;
+
+
+--------------
+
+CREATE OR REPLACE VIEW vista_nivel_escolaridad_por_departamento AS
+SELECT
+    d.nombredepa,
+    ne.nivelescolaridad,
+    COUNT(p.id_beneficiario) as cantidad_beneficiarios
+FROM
+    departamento d
+JOIN
+    Principal p ON d.codigodepar = p.codigodepar
+JOIN
+    beneficiario b ON p.id_beneficiario = b.id_beneficiario
+JOIN
+    nivelescolaridad ne ON b.id_nivelescolaridad = ne.id_nivelescolaridad
+GROUP BY
+    d.nombredepa, ne.nivelescolaridad
+ORDER BY
+    d.nombredepa, cantidad_beneficiarios DESC;
+
+SELECT * FROM vista_nivel_escolaridad_por_departamento;
+
+-------------- Esta version exluyendo los ND ----
+
+
+lCREATE OR REPLACE VIEW vista_nivel_escolaridad_por_departamento1 AS
+SELECT
+    d.nombredepa,
+    ne.nivelescolaridad,
+    COUNT(p.id_beneficiario) as cantidad_beneficiarios
+FROM
+    departamento d
+JOIN
+    Principal p ON d.codigodepar = p.codigodepar
+JOIN
+    beneficiario b ON p.id_beneficiario = b.id_beneficiario
+JOIN
+    nivelescolaridad ne ON b.id_nivelescolaridad = ne.id_nivelescolaridad
+WHERE
+    ne.nivelescolaridad <> 'ND'  -- Excluir 'ND' de la selección
+GROUP BY
+    d.nombredepa, ne.nivelescolaridad
+ORDER BY
+    d.nombredepa, cantidad_beneficiarios DESC;
+
+SELECT * FROM vista_nivel_escolaridad_por_departamento1;
